@@ -12,6 +12,7 @@ spec:
     kind: Rule
     services:
     - name: longhorn-frontend
+      namespace: longhorn-system
       kind: Service
       port: 80
   tls: {} # use TLS store default certificate

@@ -24,5 +24,4 @@ spec:
           email: aczops@tuta.io
           apiTokenSecretRef:
             name: cloudflare-api-token
-            namespace: cert-manager
             key: token

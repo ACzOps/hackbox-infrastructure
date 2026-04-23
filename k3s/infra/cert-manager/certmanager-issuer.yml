@@ -18,7 +18,8 @@ spec:
     - selector:
         dnsZones:
         - "*.k3s.hackbox.cc"
-        - "k3s.hackbox.cc"
+        - "*.hackbox.cc"
+        - "hackbox.cc"
       dns01:
         cloudflare:
           email: aczops@tuta.io

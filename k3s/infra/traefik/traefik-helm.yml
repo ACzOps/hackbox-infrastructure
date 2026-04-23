@@ -3,8 +3,6 @@ apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
   name: traefik
-  namespace: kube-system
-
 # This amends the Helm chart for the traefik ingress controller which is included with k3s.
 # https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
 spec:

@@ -2,6 +2,7 @@
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
+  namespace: kube-system
   annotations:
     helmcharts.cattle.io/managed-by: helm-controller
   finalizers:

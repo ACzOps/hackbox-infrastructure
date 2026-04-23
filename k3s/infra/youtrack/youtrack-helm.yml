@@ -3,6 +3,7 @@ apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
   name: youtrack-install
+  namespace: kube-system
 spec:
   version: 3.0.4
   chart: youtrack

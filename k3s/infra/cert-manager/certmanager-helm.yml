@@ -3,6 +3,7 @@ apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
   name: certmanager-install
+  namespace: kube-system
 spec:
   version: v1.20.2
   chart: cert-manager

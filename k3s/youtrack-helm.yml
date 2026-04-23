@@ -1,0 +1,52 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: youtrack-install
+  namespace: kube-system
+spec:
+  version: 3.0.4
+  chart: youtrack
+  repo: https://twenty-20.github.io/helm-charts/
+  targetNamespace: youtrack
+  createNamespace: true
+  backOffLimit: 3
+  valuesContent: |-
+    config:
+      baseUrl: https://youtrack.k3s.hackbox.cc
+    ingress:
+      enabled: false
+      name: youtrack-ingress
+    persistence:
+      backups:
+        backupType: volumeStorage
+        name: youtrack-backup
+        volumeStorage:
+          storageClassName: longhorn
+          storageSize: 10Gi
+      data:
+        name: youtrack-data
+        storageClassName: longhorn
+        storageSize: 10Gi
+      logs:
+        name: youtrack-logs
+        storageClassName: longhorn
+        storageSize: 5Gi
+      conf:
+        name: youtrack-config
+        storageClassName: longhorn
+        storageSize: 1Gi
+    networkPolicyWhitelist:
+      traefik:
+        enabled: false
+      cert-manager:
+        enabled: false
+    image:
+      tag: 2026.1.12458
+    initContainerResources:
+      limits:
+        cpu: 500m
+        memory: 2000Mi
+    service:
+      enabled: true
+      name: youtrack-svc

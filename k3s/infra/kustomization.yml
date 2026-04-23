@@ -7,3 +7,11 @@ resources:
 - traefik/traefik-helm.yml
 - longhorn/longhorn-helm.yml
 - youtrack/youtrack-helm.yml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: traefik
+resources:
+- traefik/traefik-cert.yml
+- traefik/traefik-ingress.yml
+- traefik/traefik-tlsstore.yml

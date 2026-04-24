@@ -14,5 +14,5 @@ spec:
     - name: flux-operator-install
       namespace: flux-system
       kind: Service
-      port: 8080 # If not, then 8090
+      port: 9080
   tls: {} # use TLS store default certificate

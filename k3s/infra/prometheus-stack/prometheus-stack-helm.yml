@@ -26,6 +26,10 @@ spec:
                   storage: 15Gi
     prometheus:
       prometheusSpec:
+        replicas: 2
+        podAntiAffinity: "hard"
+        externalLabels:
+          cluster: k3s
         storage:
           volumeClaimTemplate:
             spec:

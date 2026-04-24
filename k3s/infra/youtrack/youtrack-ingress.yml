@@ -15,4 +15,4 @@ spec:
       kind: Service
       port: 8080
       namespace: youtrack
-#  tls: {} # use TLS store default certificate
+  tls: {} # use TLS store default certificate

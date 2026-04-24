@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: flux-operator-ingress
+  namespace: flux-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`flux.k3s.hackbox.cc`)
+    kind: Rule
+    services:
+    - name: flux-operator-install
+      namespace: flux-system
+      kind: Service
+      port: 8080 # If not, then 8090
+  tls: {} # use TLS store default certificate

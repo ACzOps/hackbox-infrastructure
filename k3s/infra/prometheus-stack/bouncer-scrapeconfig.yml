@@ -4,6 +4,8 @@ kind: ScrapeConfig
 metadata:
   name: bouncer
   namespace: prometheus-stack
+  labels:
+    prometheus: system-monitoring-prometheus
 spec:
   scheme: HTTP
   staticConfigs:

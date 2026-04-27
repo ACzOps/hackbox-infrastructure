@@ -2,7 +2,7 @@
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
-  name: prometheus-stack-install
+  name: prometheus-stack
   namespace: kube-system
 spec:
   version: 84.0.1

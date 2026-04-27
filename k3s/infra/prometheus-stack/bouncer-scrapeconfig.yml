@@ -5,11 +5,8 @@ metadata:
   name: bouncer
   namespace: prometheus-stack
   labels:
-    prometheus: system-monitoring-prometheus
+    prometheus: scrape-config
 spec:
-  scrapeConfigSelector:
-    matchLabels:
-      prometheus: system-monitoring-prometheus
   scheme: HTTP
   staticConfigs:
     - labels:

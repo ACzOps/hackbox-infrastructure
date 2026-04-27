@@ -24,6 +24,9 @@ spec:
                   storage: 15Gi
     prometheus:
       prometheusSpec:
+        scrapeConfigSelector:
+          matchLabels:
+            prometheus: scrape-config
         replicas: 2
         podAntiAffinity: "hard"
         externalLabels:

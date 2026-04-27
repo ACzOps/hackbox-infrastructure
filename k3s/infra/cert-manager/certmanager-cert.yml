@@ -11,5 +11,5 @@ spec:
     name: cloudflare-issuer
   dnsNames:
   - '*.k3s.hackbox.cc'
-  - '*.hackbox.cc'
-  - 'hackbox.cc'
+  # - '*.hackbox.cc'
+  # - 'hackbox.cc'

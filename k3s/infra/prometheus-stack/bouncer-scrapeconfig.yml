@@ -8,6 +8,6 @@ spec:
   scheme: HTTP
   staticConfigs:
     - labels:
-        job: prometheus
+        job: bouncer
       targets:
         - bouncer.hackbox.cc:9100

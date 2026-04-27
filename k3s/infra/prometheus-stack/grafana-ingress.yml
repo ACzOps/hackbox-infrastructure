@@ -11,7 +11,7 @@ spec:
   - match: Host(`grafana.k3s.hackbox.cc`)
     kind: Rule
     services:
-    - name: prometheus-stack-install-grafana
+    - name: prometheus-stack-grafana
       kind: Service
       port: 80
       namespace: prometheus-stack

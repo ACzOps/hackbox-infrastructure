@@ -13,7 +13,5 @@ spec:
   version: v1.11.1
   chart: longhorn
   repo: https://charts.longhorn.io
-  failurePolicy: abort
   targetNamespace: longhorn-system
   createNamespace: true
-  backOffLimit: 3

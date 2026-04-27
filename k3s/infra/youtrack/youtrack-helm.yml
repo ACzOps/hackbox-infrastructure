@@ -10,7 +10,6 @@ spec:
   repo: https://twenty-20.github.io/helm-charts/
   targetNamespace: youtrack
   createNamespace: true
-  backOffLimit: 3
   valuesContent: |-
     config:
       baseUrl: https://youtrack.k3s.hackbox.cc

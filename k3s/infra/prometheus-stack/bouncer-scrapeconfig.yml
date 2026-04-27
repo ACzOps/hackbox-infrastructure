@@ -7,6 +7,9 @@ metadata:
   labels:
     prometheus: system-monitoring-prometheus
 spec:
+  scrapeConfigSelector:
+    matchLabels:
+      prometheus: system-monitoring-prometheus
   scheme: HTTP
   staticConfigs:
     - labels:

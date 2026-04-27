@@ -8,10 +8,8 @@ spec:
   version: v1.20.2
   chart: cert-manager
   repo: https://charts.jetstack.io
-  failurePolicy: abort
   targetNamespace: cert-manager
   createNamespace: true
-  backOffLimit: 1
   set:
     installCRDs: "true"
     crds.enabled: "true"

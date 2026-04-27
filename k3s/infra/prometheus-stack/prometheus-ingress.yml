@@ -11,7 +11,7 @@ spec:
   - match: Host(`prometheus.k3s.hackbox.cc`)
     kind: Rule
     services:
-    - name: prometheus-stack-install-k-prometheus
+    - name: prometheus-stack-k-prometheus
       kind: Service
       port: 9090
       namespace: prometheus-stack

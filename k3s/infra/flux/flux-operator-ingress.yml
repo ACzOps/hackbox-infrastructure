@@ -11,7 +11,7 @@ spec:
   - match: Host(`flux.k3s.hackbox.cc`)
     kind: Rule
     services:
-    - name: flux-operator-install
+    - name: flux-operator
       namespace: flux-system
       kind: Service
       port: 9080

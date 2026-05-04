@@ -33,6 +33,6 @@ spec:
     kind: GitRepository
     provider: github
     url: "https://github.com/ACzOps/hackbox-infrastructure.git"
-    ref: "refs/heads/INFRA-23-flux-restructure"
+    ref: "refs/heads/main"
     path: "k3s"
     pullSecret: flux-github

@@ -1,0 +1,28 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: cloudflare-issuer
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: aczops@tuta.io
+
+    # Name of a secret used to store the ACME account private key
+    # FMI: it will be created automatically by certmanager
+    privateKeySecretRef:
+      name: cloudflare-issuer-key
+
+    # ACME DNS-01 Cloudflare provider config
+    solvers:
+    - selector:
+        dnsZones:
+        - "*.k3s.hackbox.cc"
+        # - "*.hackbox.cc"
+        # - "hackbox.cc"
+      dns01:
+        cloudflare:
+          email: aczops@tuta.io
+          apiTokenSecretRef:
+            name: cloudflare-api-token
+            key: token

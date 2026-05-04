@@ -1,0 +1,19 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: certmanager
+  namespace: kube-system
+spec:
+  version: v1.20.2
+  chart: cert-manager
+  repo: https://charts.jetstack.io
+  targetNamespace: cert-manager
+  createNamespace: true
+  set:
+    installCRDs: "true"
+    crds.enabled: "true"
+    config.enableGatewayAPI: "true"
+    podDnsPolicy: None # Don't use CoreDNS for DNS resolution
+    podDnsConfig.nameservers[0]: 1.1.1.1
+    podDnsConfig.nameservers[1]: 1.0.0.1

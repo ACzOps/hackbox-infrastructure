@@ -1,0 +1,15 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: bouncer
+  namespace: prometheus-stack
+  labels:
+    prometheus: scrape-config
+spec:
+  scheme: HTTP
+  staticConfigs:
+    - labels:
+        job: bouncer
+      targets:
+        - bouncer.hackbox.cc:9100

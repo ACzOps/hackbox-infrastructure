@@ -1,0 +1,17 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cloudnative-pg
+  namespace: kube-system
+spec:
+  version: 0.28.0
+  chart: cloudnative-pg
+  repo: https://cloudnative-pg.io/charts/
+  targetNamespace: cnpg-system
+  createNamespace: true
+  set:
+    image.tag: 1.29.0
+    monitoring.grafanaDashboard.create: true
+    monitoring.grafanaDashboard.labels:
+      grafana_datasource: "1"

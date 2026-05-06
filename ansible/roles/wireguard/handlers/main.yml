@@ -1,0 +1,6 @@
+- name: Restart WireGuard interfaces
+  ansible.builtin.systemd:
+    name: "wg-quick@{{ item.interface }}"
+    state: restarted
+  loop: "{{ wireguard_environments }}"
+  when: wireguard_environments | length > 0

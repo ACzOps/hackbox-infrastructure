@@ -1,0 +1,41 @@
+---
+- name: Refresh APT cache and install sudo
+  ansible.builtin.apt:
+    name: sudo
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Validate public key content is not empty
+  ansible.builtin.assert:
+    that:
+      - debian_sudo_service_pubkey | trim | length > 0
+    fail_msg: "debian_sudo_service_pubkey must contain a valid public SSH key!"
+
+- name: Create service user if missing
+  ansible.builtin.user:
+    name: "{{ debian_sudo_service_user }}"
+    state: present
+
+- name: Install public key for remote SSH access
+  ansible.posix.authorized_key:
+    user: "{{ debian_sudo_service_user }}"
+    state: present
+    key: "{{ debian_sudo_service_pubkey }}"
+    manage_dir: "{{ debian_sudo_manage_dir }}"
+
+- name: Ensure service user is in sudo group
+  ansible.builtin.user:
+    name: "{{ debian_sudo_service_user }}"
+    groups: sudo
+    append: true
+    state: present
+
+- name: Allow sudo group passwordless sudo
+  community.general.sudoers:
+    name: sudo-group-nopasswd
+    group: sudo
+    commands: ALL
+    nopassword: true
+    state: present
+    validation: required

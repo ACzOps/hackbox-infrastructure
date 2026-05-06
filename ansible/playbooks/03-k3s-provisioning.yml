@@ -1,0 +1,20 @@
+---
+- name: Install Flux Operator from HelmChart resource
+  hosts: server
+  become: false
+  tasks:
+    - name: Run Flux Operator Helm chart tasks
+      ansible.builtin.import_role:
+        name: k3s_provisioning
+        tasks_from: flux.yml
+  tags: flux
+
+- name: Apply cert-manager secrets
+  hosts: server
+  become: false
+  tasks:
+    - name: Run CertManager tasks
+      ansible.builtin.import_role:
+        name: k3s_provisioning
+        tasks_from: cert-manager.yml
+  tags: cert-manager

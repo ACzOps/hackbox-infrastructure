@@ -1,0 +1,15 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: flux-operator
+  namespace: kube-system
+spec:
+  version: {{ k3s_provisioning_flux_operator_version }}
+  chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+  failurePolicy: abort
+  targetNamespace: flux-system
+  createNamespace: true
+  backOffLimit: 100
+  set:
+    image.repository: quay.io/fluxoperatordev/flux-operator

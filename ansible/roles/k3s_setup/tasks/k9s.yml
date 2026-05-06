@@ -1,0 +1,4 @@
+---
+- name: Install K9s
+  ansible.builtin.apt:
+    deb: "{{ k3s_setup_k9s_deb_url }}"

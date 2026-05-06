@@ -1,0 +1,69 @@
+---
+- name: Install Flux Operator from HelmChart resource
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'flux-operator.yml.j2') | from_yaml_all | list }}"
+    validate:
+      fail_on_error: true
+
+- name: Wait for Flux Operator installation job to complete
+  kubernetes.core.k8s_info:
+    api_version: batch/v1
+    kind: Job
+    name: helm-install-flux-operator
+    namespace: kube-system
+  register: k3s_provisioning_flux_install_job
+  changed_when: false
+  retries: 20
+  delay: 5
+  until:
+    - k3s_provisioning_flux_install_job.resources | length > 0
+    - (k3s_provisioning_flux_install_job.resources[0].status.succeeded | default(0) | int) > 0
+
+- name: Assert GitHub credentials are provided
+  ansible.builtin.assert:
+    that:
+      - k3s_provisioning_flux_github_app_id | trim | length > 0
+      - k3s_provisioning_flux_github_app_installation_owner | trim | length > 0
+      - k3s_provisioning_flux_github_app_token | trim | length > 0
+      - k3s_provisioning_flux_github_app_private_key | trim | length > 0
+    fail_msg: >-
+      K3s Flux GitHub credentials are incomplete!
+    quiet: true
+
+- name: Upload GitHub App PEM key
+  ansible.builtin.copy:
+    content: "{{ k3s_provisioning_flux_github_app_private_key }}"
+    dest: /tmp/flux-github-app-key.pem
+    mode: "0600"
+
+- name: Check if Flux GitHub token secret already exists
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: flux-github
+    namespace: flux-system
+  register: k3s_provisioning_flux_github_secret
+  changed_when: false
+
+- name: Create Flux GitHub token secret via Flux Operator CLI
+  when: k3s_provisioning_flux_github_secret.resources | length == 0
+  ansible.builtin.command:
+    argv:
+      - /usr/local/bin/flux-operator
+      - create
+      - secret
+      - githubapp
+      - flux-github
+      - --namespace=flux-system
+      - --app-id={{ k3s_provisioning_flux_github_app_id }}
+      - --app-installation-owner={{ k3s_provisioning_flux_github_app_installation_owner }}
+      - --app-private-key-file=/tmp/flux-github-app-key.pem
+  changed_when: true
+
+- name: Apply Flux Instance resource
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'flux-instance.yml.j2') | from_yaml_all | list }}"
+    validate:
+      fail_on_error: true

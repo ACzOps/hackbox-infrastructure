@@ -1,0 +1,9 @@
+---
+- name: Install base packages on Debian hosts
+  hosts: debian_hosts
+  become: true
+  become_method: ansible.builtin.sudo
+  become_user: root
+  gather_facts: true
+  roles:
+    - role: debian_packages

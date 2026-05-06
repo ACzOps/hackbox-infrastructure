@@ -1,0 +1,24 @@
+# FMI: WireGuard uses its own keys (not SSH). Generate: wg genkey | tee priv | wg pubkey < priv
+
+wireguard_environments:
+  - name: qa
+    interface: wg0
+    port: "{{ wg_qa_port }}"
+    vps_address: "{{ wg_qa_vps_address }}"
+    private_key: "{{ wg_qa_private_key }}"
+    relay:
+      public_key: "{{ wg_qa_relay_public_key }}"
+      allowed_ips: "{{ wg_qa_relay_allowed_ips }}"
+      keepalive: 25
+    clients: "{{ wg_qa_clients }}"
+
+  - name: preprod
+    interface: wg1
+    port: "{{ wg_preprod_port }}"
+    vps_address: "{{ wg_preprod_vps_address }}"
+    private_key: "{{ wg_preprod_private_key }}"
+    relay:
+      public_key: "{{ wg_preprod_relay_public_key }}"
+      allowed_ips: "{{ wg_preprod_relay_allowed_ips }}"
+      keepalive: 25
+    clients: "{{ wg_preprod_clients }}"

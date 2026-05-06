@@ -1,0 +1,11 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: grafana-operator
+  namespace: kube-system
+spec:
+  version: 5.22.2
+  chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
+  targetNamespace: prometheus-stack
+  createNamespace: true

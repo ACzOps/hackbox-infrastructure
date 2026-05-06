@@ -1,0 +1,4 @@
+---
+debian_sudo_service_pubkey: "{{ service_ssh_public_key_content | default('') }}"
+debian_sudo_service_user: service
+debian_sudo_manage_dir: true

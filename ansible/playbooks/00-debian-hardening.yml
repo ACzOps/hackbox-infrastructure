@@ -1,0 +1,10 @@
+---
+- name: Configure SSH key access and sudo policy on Debian hosts
+  hosts: debian_hosts
+  become: true
+  become_method: ansible.builtin.su
+  become_user: root
+  gather_facts: true
+  roles:
+    - role: debian_sudo
+    - role: sshd_hardening

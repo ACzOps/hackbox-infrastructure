@@ -1,0 +1,20 @@
+[Unit]
+Description=WireGuard Portal
+ConditionPathExists={{ wireguard_portal_directory }}/wg-portal
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW CAP_SYS_MODULE
+
+Restart=on-failure
+RestartSec=10
+
+WorkingDirectory={{ wireguard_portal_directory }}
+Environment=WG_PORTAL_CONFIG={{ wireguard_portal_directory }}/config.yml
+ExecStart={{ wireguard_portal_directory }}/wg-portal
+
+[Install]
+WantedBy=multi-user.target

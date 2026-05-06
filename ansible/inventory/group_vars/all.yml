@@ -1,0 +1,2 @@
+hackbox_domain: hackbox.cc
+k3s_hackbox_domain: "k3s.{{ hackbox_domain }}"

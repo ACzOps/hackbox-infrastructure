@@ -1,0 +1,23 @@
+# Jinja2 template for WireGuard configuration
+
+[Interface]
+Address = {{ item.vps_address }}/24
+ListenPort = {{ item.port }}
+PrivateKey = {{ item.private_key }}
+PostUp = sysctl -q -w net.ipv4.conf.%i.rp_filter=0{% if wireguard_external_interface %}; iptables -A FORWARD -i %i -o %i -j ACCEPT; iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o {{ wireguard_external_interface }} -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -o %i -j ACCEPT; iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o {{ wireguard_external_interface }} -j MASQUERADE{% endif %}
+
+{% if item.relay is defined and (item.relay.public_key | default('')) %}
+[Peer]
+PublicKey = {{ item.relay.public_key }}
+AllowedIPs = {{ item.relay.allowed_ips }}
+PersistentKeepalive = {{ item.relay.keepalive | default(25) }}
+{% endif %}
+
+{% for client in item.clients | default([]) %}
+{% if (client.public_key | default('')) %}
+[Peer]
+PublicKey = {{ client.public_key }}
+AllowedIPs = {{ client.allowed_ips }}
+{% endif %}
+{% endfor %}

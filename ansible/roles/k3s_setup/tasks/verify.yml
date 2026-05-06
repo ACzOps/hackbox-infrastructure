@@ -1,0 +1,14 @@
+---
+- name: Check K3s default namespace and k8s python library
+  kubernetes.core.k8s_info:
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+    kind: Namespace
+    name: default
+  register: k3s_setup_namespace
+
+- name: Verify K3s default namespace
+  ansible.builtin.assert:
+    that:
+      - k3s_setup_namespace.resources | length > 0
+    fail_msg: "K3s default namespace does not exist"
+    success_msg: "K3s default namespace exists"

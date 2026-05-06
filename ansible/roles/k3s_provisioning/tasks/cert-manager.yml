@@ -1,0 +1,14 @@
+---
+- name: Assert Cloudflare API token is provided
+  ansible.builtin.assert:
+    that:
+      - k3s_provisioning_cloudflare_api_token is defined
+      - k3s_provisioning_cloudflare_api_token | trim | length > 0
+    fail_msg: "Cloudflare API token is empty!"
+
+- name: Apply CertManager secrets
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'certmanager-secret.yml.j2') | from_yaml_all | list }}"
+    validate:
+      fail_on_error: true

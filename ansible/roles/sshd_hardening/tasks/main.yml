@@ -1,0 +1,12 @@
+---
+- name: Configure SSH daemon hardening settings
+  ansible.builtin.lineinfile:
+    path: "{{ sshd_hardening_config_path }}"
+    regexp: "^#?{{ item.key }}\\s+"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+    backrefs: false
+    validate: "/usr/sbin/sshd -t -f %s"
+  loop: "{{ sshd_hardening_settings | dict2items }}"
+  changed_when: true
+  notify: Restart SSH service

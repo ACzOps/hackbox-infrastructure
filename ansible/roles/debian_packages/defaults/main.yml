@@ -1,0 +1,8 @@
+---
+debian_packages_list:
+  - net-tools
+  - htop
+  - vim
+  - sudo
+debian_packages_update_cache: true
+debian_packages_cache_valid_time: 3600

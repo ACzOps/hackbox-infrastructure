@@ -1,0 +1,17 @@
+---
+wireguard_portal_version: v2.2.3
+wireguard_portal_binary_url: "https://github.com/h44z/wg-portal/releases/download/{{ wireguard_portal_version }}/wg-portal_linux_amd64"
+wireguard_portal_directory: /opt/wg-portal
+wireguard_portal_domain: "wireguard.{{ hackbox_domain }}"
+wireguard_portal_cloudflare_api_token: ""
+
+# Config.yml settings
+wireguard_portal_admin_user: ""
+wireguard_portal_admin_password: ""
+wireguard_portal_admin_api_token: ""
+wireguard_portal_csrf_secret: ""
+wireguard_portal_session_secret: ""
+wireguard_portal_encryption_passphrase: ""
+
+# Caddy settings
+wireguard_portal_caddy_binary_url: "https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&idempotency=20456002298410"

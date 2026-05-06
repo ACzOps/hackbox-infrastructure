@@ -1,0 +1,31 @@
+---
+# pip.yml vars
+k3s_setup_python_min_version: "3.9"
+k3s_setup_pip_packages:
+  - "kubernetes>=24.2.0"
+  - "PyYAML>=3.11"
+  - "jsonpatch"
+  - "kubernetes-validate>=1.35.0"
+k3s_setup_pip_extra_args: "--break-system-packages" # PEP 668 thingy
+
+# preflight.yml vars
+k3s_setup_binary_path: /usr/local/bin/k3s
+k3s_setup_systemd_unit: k3s
+
+# helm.yml vars
+k3s_setup_helm_version: 3.20.0-1
+k3s_setup_helm_repo_url: https://packages.buildkite.com/helm-linux/helm-debian/any/
+k3s_setup_helm_repo_key_url: https://packages.buildkite.com/helm-linux/helm-debian/gpgkey
+
+# k9s.yml vars
+k3s_setup_k9s_version: 0.50.18
+k3s_setup_k9s_deb_url: "https://github.com/derailed/k9s/releases/download/v{{ k3s_setup_k9s_version }}/k9s_linux_amd64.deb"
+
+# flux.yml vars
+k3s_setup_flux_operator_version: 0.48.0
+k3s_setup_flux_operator_url: >-
+  {{ 'https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v'
+  ~ k3s_setup_flux_operator_version
+  ~ '/flux-operator_'
+  ~ k3s_setup_flux_operator_version
+  ~ '_linux_amd64.tar.gz' }}

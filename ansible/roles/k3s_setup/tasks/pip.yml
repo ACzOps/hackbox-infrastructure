@@ -1,0 +1,25 @@
+---
+- name: Detect pip for Python 3
+  ansible.builtin.command:
+    argv:
+      - "python3"
+      - -m
+      - pip
+      - --version
+  register: k3s_setup_pip_detect
+  changed_when: false
+  failed_when: false
+
+- name: Install python3-pip when missing
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
+    update_cache: true
+  when: k3s_setup_pip_detect.rc != 0
+
+- name: Install Python packages for kubernetes.core
+  ansible.builtin.pip:
+    name: "{{ k3s_setup_pip_packages }}"
+    state: present
+    executable: "/usr/bin/pip3"
+    extra_args: "{{ k3s_setup_pip_extra_args }}"

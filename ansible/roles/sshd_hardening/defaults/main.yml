@@ -1,0 +1,9 @@
+---
+sshd_hardening_config_path: /etc/ssh/sshd_config
+sshd_hardening_service_name: ssh
+sshd_hardening_settings:
+  PermitRootLogin: "no"
+  PasswordAuthentication: "no"
+  PubkeyAuthentication: "yes"
+  KbdInteractiveAuthentication: "no"
+  ChallengeResponseAuthentication: "no"

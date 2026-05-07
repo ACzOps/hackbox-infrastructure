@@ -1,0 +1,27 @@
+---
+- name: Check if Flux Operator CLI is already installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/flux-operator
+  register: k3s_setup_flux_operator_stat
+  changed_when: false
+  failed_when: false
+
+- name: Download Flux Operator CLI
+  when: not k3s_setup_flux_operator_stat.stat.exists
+  ansible.builtin.unarchive:
+    src: "{{ k3s_setup_flux_operator_url }}"
+    dest: /usr/local/bin/
+    exclude: "LICENSE"
+    remote_src: true
+    mode: "0755"
+
+- name: Verify Flux Operator CLI
+  ansible.builtin.command:
+    cmd: "flux-operator --version"
+  register: k3s_setup_flux_operator_version
+  changed_when: false
+
+- name: Show Flux Operator CLI version
+  ansible.builtin.debug:
+    var: k3s_setup_flux_operator_version.stdout
+  when: k3s_setup_flux_operator_version is defined

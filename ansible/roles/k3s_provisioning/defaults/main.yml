@@ -1,0 +1,10 @@
+# CertManager
+k3s_provisioning_cloudflare_api_token: ""
+k3s_provisioning_certmanager_namespace: cert-manager
+
+# Flux Operator
+k3s_provisioning_flux_operator_version: 0.47.0
+k3s_provisioning_flux_git_repository: "https://github.com/ACzOps/hackbox-infrastructure.git"
+k3s_provisioning_flux_git_ref: "refs/heads/main"
+k3s_provisioning_flux_git_path: "k3s"
+k3s_provisioning_flux_github_app_token: ""

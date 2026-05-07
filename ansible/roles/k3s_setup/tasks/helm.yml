@@ -1,0 +1,15 @@
+---
+- name: Add Helm repository
+  ansible.builtin.deb822_repository:
+    name: helm
+    types: deb
+    uris: "{{ k3s_setup_helm_repo_url }}"
+    components: main
+    suites: any
+    signed_by: "{{ k3s_setup_helm_repo_key_url }}"
+
+- name: Install Helm
+  ansible.builtin.apt:
+    name: "helm={{ k3s_setup_helm_version }}"
+    state: present
+    update_cache: true

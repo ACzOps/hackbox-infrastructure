@@ -1,0 +1,21 @@
+---
+- name: Install required apt packages
+  ansible.builtin.apt:
+    name: "{{ debian_packages_list }}"
+    state: present
+    update_cache: "{{ debian_packages_update_cache }}"
+    cache_valid_time: "{{ debian_packages_cache_valid_time }}"
+
+- name: Update apt and upgrade all packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    cache_valid_time: 3600
+
+- name: Check if a reboot is required
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  register: debian_packages_reboot
+  failed_when: false
+  changed_when: debian_packages_reboot.stat.exists
+  notify: Reboot host

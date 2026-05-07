@@ -1,0 +1,89 @@
+---
+# Skip this task with --skip-tags preflight when reinstalling k3s
+- name: Detect existing k3s installation
+  hosts: k3s_cluster
+  tags: preflight
+  become: true
+  tasks:
+    - name: Run k3s preflight check
+      ansible.builtin.import_role:
+        name: k3s_setup
+        tasks_from: preflight.yml
+
+- name: Cluster prep
+  hosts: k3s_cluster
+  gather_facts: true
+  become: true
+  tags: install
+  pre_tasks:
+    - name: Skip because k3s is already installed
+      ansible.builtin.meta: end_play
+      when: k3s_setup_already_installed | default(false)
+  roles:
+    - role: k3s.orchestration.prereq
+    - role: k3s.orchestration.airgap
+    - role: k3s.orchestration.raspberrypi
+
+- name: Setup K3S server
+  hosts: server
+  gather_facts: false
+  become: true
+  tags: install
+  pre_tasks:
+    - name: Skip because k3s is already installed
+      ansible.builtin.meta: end_play
+      when: k3s_setup_already_installed | default(false)
+  roles:
+    - role: k3s.orchestration.k3s_server
+
+- name: Setup K3S agent
+  hosts: agent
+  gather_facts: false
+  become: true
+  tags: install
+  pre_tasks:
+    - name: Skip because k3s is already installed
+      ansible.builtin.meta: end_play
+      when: k3s_setup_already_installed | default(false)
+  roles:
+    - role: k3s.orchestration.k3s_agent
+
+- name: Launch k3s pip setup
+  hosts: server
+  become: true
+  tags: pip
+  tasks:
+    - name: Run pip setup tasks
+      ansible.builtin.import_role:
+        name: k3s_setup
+        tasks_from: pip.yml
+
+- name: Verify k3s shortly
+  hosts: server
+  become: true
+  tags: verify
+  tasks:
+    - name: Run verify tasks
+      ansible.builtin.import_role:
+        name: k3s_setup
+        tasks_from: verify.yml
+
+- name: Install K9s
+  hosts: server
+  become: true
+  tasks:
+    - name: Run K9s tasks
+      ansible.builtin.import_role:
+        name: k3s_setup
+        tasks_from: k9s.yml
+  tags: k9s
+
+- name: Install Flux CLI
+  hosts: server
+  become: true
+  tasks:
+    - name: Run Flux CLI tasks
+      ansible.builtin.import_role:
+        name: k3s_setup
+        tasks_from: flux.yml
+  tags: flux

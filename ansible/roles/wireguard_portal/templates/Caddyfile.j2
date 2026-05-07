@@ -1,0 +1,8 @@
+{{ wireguard_portal_domain }} {
+	tls {
+		dns cloudflare {{ wireguard_portal_cloudflare_api_token }}
+		resolvers 1.1.1.1
+	}
+
+	reverse_proxy localhost:8080
+}

@@ -1,0 +1,37 @@
+core:
+  admin_user: {{ wireguard_portal_admin_user }}
+  admin_password: {{ wireguard_portal_admin_password }}
+  admin_api_token: {{ wireguard_portal_admin_api_token }}
+  import_existing: true
+  create_default_peer: false
+  self_provisioning_allowed: false
+
+backend:
+  default: local
+  local_resolvconf_prefix: ""
+
+web:
+  site_title: Hackbox WireGuard Portal
+  site_company_name: Hackbox.cc
+  listening_address: 127.0.0.1:8080
+  external_url: "https://{{ wireguard_portal_domain }}"
+  csrf_secret: "{{ wireguard_portal_csrf_secret }}"
+  session_secret: "{{ wireguard_portal_session_secret }}"
+  request_logging: true
+
+advanced:
+  log_level: trace
+  log_pretty: true
+  log_json: false
+  config_storage_path: /etc/wireguard
+  expiry_check_interval: 5m
+
+database:
+  debug: true
+  type: sqlite
+  dsn: data/sqlite.db
+  encryption_passphrase: "{{ wireguard_portal_encryption_passphrase }}"
+
+auth:
+  webauthn:
+    enabled: false

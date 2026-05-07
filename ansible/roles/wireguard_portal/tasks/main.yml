@@ -1,0 +1,103 @@
+---
+- name: Install SQLite
+  ansible.builtin.apt:
+    name:
+      - sqlite3
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Check if Caddy is already installed
+  ansible.builtin.stat:
+    path: "/usr/bin/caddy"
+  register: wireguard_portal_caddy_binary
+  failed_when: false
+  changed_when: false
+
+- name: Download Caddy binary
+  ansible.builtin.get_url:
+    url: "{{ wireguard_portal_caddy_binary_url }}"
+    dest: "/usr/bin/caddy"
+    mode: "0755"
+    owner: root
+    group: root
+  when: not wireguard_portal_caddy_binary.stat.exists
+
+- name: Deploy Caddy service
+  ansible.builtin.template:
+    src: caddy.service.j2
+    dest: "/etc/systemd/system/caddy.service"
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: Create Caddy directory
+  ansible.builtin.file:
+    path: "/etc/caddy"
+    state: directory
+    mode: "0750"
+    owner: root
+    group: root
+
+- name: Deploy Caddy config
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: "/etc/caddy/Caddyfile"
+    mode: "0600"
+    owner: root
+    group: root
+
+- name: Enable and start Caddy service
+  ansible.builtin.systemd:
+    name: caddy.service
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Check if WireGuard Portal exists
+  ansible.builtin.stat:
+    path: "{{ wireguard_portal_directory }}/wg-portal"
+  register: wireguard_portal_binary
+  failed_when: false
+  changed_when: false
+
+- name: Create WireGuard Portal directory
+  ansible.builtin.file:
+    path: "{{ wireguard_portal_directory }}"
+    state: directory
+    mode: "0750"
+    owner: root
+    group: root
+  when: not wireguard_portal_binary.stat.exists
+
+- name: Download WireGuard Portal binary
+  ansible.builtin.get_url:
+    url: "{{ wireguard_portal_binary_url }}"
+    dest: "{{ wireguard_portal_directory }}/wg-portal"
+    mode: "0755"
+    owner: root
+    group: root
+  when: not wireguard_portal_binary.stat.exists
+
+- name: Deploy WireGuard Systemd service
+  ansible.builtin.template:
+    src: wg-portal.service.j2
+    dest: "/etc/systemd/system/wg-portal.service"
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: Deploy WireGuard Portal config
+  ansible.builtin.template:
+    src: config.yml.j2
+    dest: "{{ wireguard_portal_directory }}/config.yml"
+    mode: "0600"
+    owner: root
+    group: root
+
+- name: Enable and start WireGuard Portal service
+  ansible.builtin.systemd:
+    name: wg-portal.service
+    state: started
+    enabled: true
+    daemon_reload: true

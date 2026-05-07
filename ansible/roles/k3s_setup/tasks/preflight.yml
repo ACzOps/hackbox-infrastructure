@@ -1,0 +1,40 @@
+---
+- name: Check K3s systemd unit exists
+  when: inventory_hostname in groups['server']
+  ansible.builtin.systemd_service:
+    name: "{{ k3s_setup_systemd_unit }}"
+    state: started
+    enabled: true
+  check_mode: true
+  register: _k3s_setup_systemd_status
+  failed_when: false
+  changed_when: false
+
+- name: Check K3s binary is present
+  ansible.builtin.stat:
+    path: "{{ k3s_setup_binary_path }}"
+  failed_when: false
+  changed_when: false
+  register: _k3s_setup_binary
+
+- name: Check K3s binary is running
+  ansible.builtin.command:
+    cmd: "pgrep -f '{{ k3s_setup_binary_path }}'"
+  failed_when: false
+  changed_when: false
+  register: _k3s_setup_binary_pid
+
+- name: Publish preflight check to stop K3s installation
+  ansible.builtin.set_fact:
+    k3s_setup_already_installed: "{{ _k3s_setup_binary.stat.exists | default(false) }}"
+
+- name: Status of K3s systemd unit on control plane
+  when: inventory_hostname in groups['server']
+  ansible.builtin.debug:
+    msg: "K3s service status: {{ _k3s_setup_systemd_status.status.get('ActiveState', '') | default('') }}"
+
+- name: Status of K3s binary
+  ansible.builtin.debug:
+    msg:
+      - "K3s binary exists: {{ _k3s_setup_binary.stat.exists | bool }}"
+      - "K3s process ID: {{ _k3s_setup_binary_pid.stdout | default('not running') }}"

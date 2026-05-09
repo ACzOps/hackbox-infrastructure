@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: postgresql
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql-cluster
+  namespace: postgresql
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:18-minimal-trixie@sha256:59e50a79185bfde76057bfbc13b1ab3dd282d67b1a9d6a464b6d5234a2324730
+  instances: 3
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
+      storageClassName: longhorn-pg
+  walStorage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: longhorn-pg
+  managed:
+    roles:
+    - name: infisical
+      ensure: present
+      login: true
+      superuser: false
+      createdb: false
+      passwordSecret: postgresql-cluster-infisical # Remember to create this secret manually! Check README.md for schema
+
+

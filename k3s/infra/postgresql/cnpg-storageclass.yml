@@ -9,7 +9,6 @@ parameters:
   numberOfReplicas: "1"
   dataLocality: "strict-local"
   staleReplicaTimeout: "2880" # 48 hours in minutes
-  fromBackup: ""
   fsType: "xfs"
 reclaimPolicy: "Delete"
 volumeBindingMode: "Immediate"

@@ -28,3 +28,13 @@ spec:
         requests:
           storage: 1Gi
       storageClassName: longhorn-pg
+  managed:
+    roles:
+    - name: infisical
+      ensure: present
+      login: true
+      superuser: false
+      createdb: false
+      passwordSecret: postgresql-cluster-infisical # Remember to create this secret manually! Check README.md for schema
+
+

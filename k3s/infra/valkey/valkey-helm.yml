@@ -1,0 +1,47 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: valkey
+  namespace: kube-system
+spec:
+  version: 0.9.4
+  chart: valkey
+  repo: https://valkey.io/valkey-helm/
+  targetNamespace: valkey
+  createNamespace: true
+  valuesContent: |-
+    dataStorage:
+      enabled: true
+      className: longhorn-pg
+      requestedSize: 1Gi
+    auth:
+      enabled: true
+      usersExistingSecret: "valkey-users"
+      aclUsers:
+        default:
+          permissions: "~* &* +@all"
+          passwordKey: "admin-password"
+        readonly:
+          permissions: "~* -@all +@read +ping +info"
+          passwordKey: "readonly-password"
+        infisical:
+          permissions: "~infisical:* -@all +@connection +@string +@hash +@keyspace +ping +info"
+          passwordKey: "infisical-password"
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        extraLabels:
+          release: prometheus-stack
+      exporter:
+        args:
+        - --redis.addr=rediss://valkey:6379
+        - --skip-tls-verification
+    tls:
+      enabled: true
+      existingSecret: valkey-tls
+      serverPublicKey: tls.crt
+      serverKey: tls.key
+      caPublicKey: ca.crt
+      requireClientCertificate: false

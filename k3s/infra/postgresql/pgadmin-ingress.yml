@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pgadmin-ingress
+  namespace: postgresql
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`postgres.k3s.hackbox.cc`)
+    kind: Rule
+    services:
+    - name: pgadmin-pgadmin4
+      kind: Service
+      port: 80
+      namespace: postgresql
+  tls: {} # use TLS store default certificate

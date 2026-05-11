@@ -1,0 +1,30 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: pgadmin
+  namespace: kube-system
+spec:
+  version: 1.62.0
+  chart: pgadmin4
+  repo: https://helm.runix.net
+  targetNamespace: postgresql
+  createNamespace: true
+  valuesContent: |-
+    image:
+      tag: "9.14.0@sha256:ff557f69d9808085dc3554f56c1b06a36ac8cddabe4485212920b9604261abdb"
+    replicaCount: 1
+    persistentVolume:
+      enabled: true
+      storageClass: longhorn
+      size: 1Gi
+    existingSecret: pgadmin-secret
+    env:
+      email: "admin@hackbox.cc"
+      enhanced_cookie_protection: "True"
+      variables:
+        - name: PGADMIN_CONFIG_MAX_LOGIN_ATTEMPTS
+          value: "5"
+    strategy:
+      type: Recreate
+

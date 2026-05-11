@@ -14,7 +14,7 @@ data:
   password: <base64_password>
 ```
 
-# PGAdmin4 secret
+# PGadmin4 secret
 Same with PGAdmin4 passwords and server definitons:
 ```yaml
 ---

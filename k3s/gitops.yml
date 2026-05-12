@@ -5,9 +5,10 @@ metadata:
   name: hackbox-gitops
   namespace: flux-system
 spec:
-  interval: 1m30s
+  interval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
+  path: ./k3s/infra
   prune: true
   timeout: 2m

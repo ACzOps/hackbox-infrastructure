@@ -16,7 +16,6 @@ spec:
     passthrough: false
     options:
       name: no-alpn
-
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -35,7 +34,6 @@ spec:
     passthrough: false
     options:
       name: no-alpn
-
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP

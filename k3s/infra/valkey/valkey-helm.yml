@@ -36,8 +36,7 @@ spec:
           release: prometheus-stack
       exporter:
         args:
-        - --redis.addr=rediss://valkey.k3s.hackbox.cc:6379
+        - --redis.addr=redis://valkey:6379
     tls:
       enabled: false
 # FMI: TLS between Traefik and VAlkey needs to be fixed at some point!
-

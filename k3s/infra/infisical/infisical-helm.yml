@@ -29,4 +29,3 @@ spec:
       enabled: false
     redis:
       enabled: false
-

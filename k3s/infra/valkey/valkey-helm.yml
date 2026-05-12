@@ -26,7 +26,7 @@ spec:
           permissions: "~* -@all +@read +ping +info"
           passwordKey: "readonly-password"
         infisical:
-          permissions: "~infisical:* -@all +@connection +@string +@hash +@keyspace +ping +info"
+          permissions: "~* &* -@all +@connection +@read +@write +@keyspace +@pubsub +@transaction +@scripting +info"
           passwordKey: "infisical-password"
     metrics:
       enabled: true
@@ -36,12 +36,7 @@ spec:
           release: prometheus-stack
       exporter:
         args:
-        - --redis.addr=rediss://valkey:6379
-        - --skip-tls-verification
+        - --redis.addr=redis://valkey:6379
     tls:
-      enabled: true
-      existingSecret: valkey-tls
-      serverPublicKey: tls.crt
-      serverKey: tls.key
-      caPublicKey: ca.crt
-      requireClientCertificate: false
+      enabled: false
+# FMI: TLS between Traefik and VAlkey needs to be fixed at some point!

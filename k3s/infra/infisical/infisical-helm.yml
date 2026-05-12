@@ -1,0 +1,31 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: infisical
+  namespace: kube-system
+spec:
+  version: 1.8.0
+  chart: infisical-standalone
+  repo: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+  targetNamespace: infisical
+  createNamespace: true
+  valuesContent: |-
+    infisical:
+      enabled: true
+      image.tag: "v0.159.28@sha256:3ab10367dc7708028d003bd20b488ccb7f537d346487a6748ff75d48bc282454"
+      replicaCount: 2
+      autoBootstrap:
+        enabled: true
+        secretDestination:
+          namespace: "infisical"
+        organization: "hackbox-cc"
+    kubeSecretRef: "infisical-secrets"
+    ingress:
+      enabled: false
+      nginx:
+        enabled: false
+    postgresql:
+      enabled: false
+    redis:
+      enabled: false

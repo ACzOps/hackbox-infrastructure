@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: infisical-ingress
+  namespace: infisical
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`infisical.k3s.hackbox.cc`)
+    kind: Rule
+    services:
+    - name: infisical-infisical-standalone-infisical
+      kind: Service
+      port: 8080
+      namespace: infisical
+  tls: {}

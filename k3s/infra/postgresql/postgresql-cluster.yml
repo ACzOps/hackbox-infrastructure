@@ -35,6 +35,7 @@ spec:
       login: true
       superuser: false
       createdb: false
-      passwordSecret: postgresql-cluster-infisical # Remember to create this secret manually! Check README.md for schema
+      passwordSecret: 
+        name: postgresql-cluster-infisical # Remember to create this secret manually! Check README.md for schema
 
 

@@ -1,0 +1,13 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: infisical-db
+  namespace: postgresql
+spec:
+  databaseReclaimPolicy: retain
+  name: infisical
+  owner: infisical
+  ensure: present
+  cluster:
+    name: postgresql-cluster

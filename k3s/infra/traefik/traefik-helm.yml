@@ -4,11 +4,35 @@ kind: HelmChartConfig
 metadata:
   name: traefik
   namespace: kube-system
-# This amends the Helm chart for the traefik ingress controller which is included with k3s.
-# https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
 spec:
   valuesContent: |-
     logs:
       access:
         enabled: true
         format: common
+    providers:
+      kubernetesGateway:
+        enabled: false
+        experimentalChannel: true
+      kubernetesIngress:
+        enabled: true
+      kubernetesCRD:
+        enabled: true
+    ports:
+      postgresql:
+        expose:
+          default: true
+        port: 5432
+        exposedPort: 5432
+        protocol: TCP
+        tls:
+          enabled: true
+      rediss:
+        expose:
+          default: true
+        port: 6379
+        exposedPort: 6379
+        protocol: TCP
+        tls:
+          enabled: true
+

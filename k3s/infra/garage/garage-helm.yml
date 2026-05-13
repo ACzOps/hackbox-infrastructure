@@ -1,0 +1,50 @@
+---
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: garage
+  namespace: kube-system
+spec:
+  version: 2.3.2
+  chart: garage
+  repo: https://charts.derwitt.dev
+  targetNamespace: garage
+  createNamespace: true
+  valuesContent: |-
+    garage:
+      s3:
+        api:
+          region: "garage"
+          rootDomain: ".garage.k3s.hackbox.cc"
+        web:
+          rootDomain: ".s3.k3s.hackbox.cc"
+          index: "index.html"
+    persistence:
+      meta:
+        storageClass: longhorn
+        size: 10Gi
+      data:
+        storageClass: longhorn
+        size: 30Gi
+    image:
+      tag: "v2.3.0@sha256:dac0c92add4f1a0b41035e94b41036a270ffbe88a37c7ac9c3f19e6dc5bdccf2"
+    monitoring:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          labels:
+            release: prometheus-stack
+      tracing:
+        sink: "" # FMI: think about OpenTelemetry or Jaeger     
+      grafanaDashboard:
+        enabled: true
+    resources:
+      limits:
+        cpu: 100m
+        memory: 1024Mi
+      requests:
+        cpu: 100m
+        memory: 512Mi
+

@@ -4,6 +4,8 @@ kind: ServiceMonitor
 metadata:
   name: infisical
   namespace: infisical
+  labels:
+    release: prometheus-stack
 spec:
   selector:
     matchLabels:

@@ -1,0 +1,77 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: loki
+  namespace: kube-system
+spec:
+  version: 13.6.3
+  chart: loki
+  repo: https://grafana-community.github.io/helm-charts/
+  targetNamespace: loki
+  createNamespace: true
+  valuesContent: |-
+    deploymentMode: SimpleScalable
+    loki:
+      image.tag: "3.7.2@sha256:191d4fdfb7264f16989f0a57f320872620a5a7c2ceeec6229212c4190ec49b86"
+      storage:
+        type: s3
+        bucketNames:
+          chunks: chunks
+          ruler: ruler
+        s3:
+          endpoint: "${LOKI_S3_ENDPOINT}"
+          accessKeyId: "${LOKI_S3_ACCESS_ID}"
+          secretAccessKey: "${LOKI_S3_ACCESS_KEY}"
+          region: "garage"
+          s3ForcePathStyle: true
+        object_store:
+          type: s3
+          s3:
+            endpoint: "${LOKI_S3_ENDPOINT}"
+            accessKeyId: "${LOKI_S3_ACCESS_ID}"
+            secretAccessKey: "${LOKI_S3_ACCESS_KEY}"
+            region: "garage"
+      schemaConfig:
+        configs:
+          - from: 2026-05-12
+            object_store: s3
+            store: tsdb
+            schema: v13
+            index:
+              prefix: index_
+              period: 24h
+      ui:
+        enabled: true
+    write:
+      persistence:
+        storageClass: longhorn
+    backend:
+      persistence:
+        storageClass: longhorn
+      extraArgs:
+        - '-config.expand-env=true'
+      extraEnv:
+        - name: LOKI_S3_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: loki-s3
+              key: s3-endpoint
+        - name: LOKI_S3_ACCESS_ID
+          valueFrom:
+            secretKeyRef:
+              name: loki-s3
+              key: s3-access-id
+        - name: LOKI_S3_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: loki-s3
+              key: s3-access-key
+    monitoring:
+      dashboards:
+        enabled: true
+        namespace: loki
+      rules:
+        enabled: true
+      serviceMonitor:
+        enabled: true

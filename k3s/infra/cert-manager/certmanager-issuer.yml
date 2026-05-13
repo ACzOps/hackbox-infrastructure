@@ -17,7 +17,6 @@ spec:
     solvers:
     - selector:
         dnsZones:
-        - "*.s3.k3s.hackbox.cc"
         - "*.k3s.hackbox.cc"
         # - "*.hackbox.cc"
         # - "hackbox.cc"

@@ -10,7 +10,6 @@ spec:
     kind: ClusterIssuer
     name: cloudflare-issuer
   dnsNames:
-  - '*.s3.k3s.hackbox.cc'
   - '*.k3s.hackbox.cc'
   # - '*.hackbox.cc'
   # - 'hackbox.cc'

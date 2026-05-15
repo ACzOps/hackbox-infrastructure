@@ -1,46 +1,18 @@
-# Hackbox.cc infrastructure repository
+# Hackbox.cc infrastructure documentation
+Updated: 15 May 2026
 
-Provisioning scripts, playbooks and recipes for Hackbox.cc infrastructure
+The homelab described in this repository is **experimental**: main objective is to tinker with the stack, validate tools and workflows before anything might be promoted to a “real” environment. This documentation exists to make orientation easier and to preserve context between work sessions.
 
-## Requirements
+## Where things live
 
-Install required Ansible collections before running playbooks:
+**Physical architecture** (hardware, hosts, network at a glance): [physical-architecture.md](documentation/physical-architecture.md).
 
-`ansible-galaxy collection install -r requirements.yml`
+**Service architecture** (overview of services running in the homelab): [service-architecture.md](documentation/service-architecture.md).
 
-## Playbooks
+**Architecture Decision Records (ADRs)** capture *what* we chose, *why*, and the consequences, so we do not have to rediscover the reasoning from scratch later. Individual records live under [`adr/`](documentation/adr/).
 
-- `playbooks/debian_setup.yml` - applies baseline Debian host provisioning to all inventory hosts (SSH key setup, base packages, and sudo policy for the `sudo` group). Launch it only once, since it uses `su` method or change to `sudo` method if needed to launch again.
-- `playbooks/k3s_setup.yml` - imports the upstream K3s orchestration playbook to install and configure the K3s cluster.
+## Automation layout
 
-## Roles
+Initial **bare-metal host provisioning** is driven by **Ansible playbooks** in [`ansible/playbooks/`](ansible/playbooks/). More to read about Ansible playbooks and roles in Ansible [README file](ansible/README.md).
 
-- `roles/debian_packages` - installs baseline Debian packages via `apt`.
-- `roles/debian_setup` - provisions Debian hosts by configuring authorized SSH keys, adding the `service` user to `sudo`, and enforcing passwordless sudo for the `sudo` group.
-- `roles/k3s_setup` - downloads and runs the K3s installer for control-plane and node hosts with role defaults for token and control-plane endpoint.
-
-## Troubleshooting
-
-### Host Key checking error
-
-If you see an error like `Using a SSH password instead of a key is not possible because Host Key checking is enabled`, preload host fingerprints into your local `known_hosts` file:
-
-`ansible-inventory -i inventory/hosts.yml --list | jq -r "._meta.hostvars[] | .ansible_host" | xargs -0 ssh-keyscan -H >> ~/.ssh/known_hosts`
-
-For the WireGuard host on a custom SSH port:
-
-`ssh-keyscan -H -p 10122 wg.hackbox.cc >> ~/.ssh/known_hosts`
-
-The `-H` flag hashes hostnames in the output before writing them to `known_hosts`, which helps avoid exposing plaintext hostnames if the file is shared.
-
-### Limiting hosts
-
-Every host has a different `service` account password for security reasons, so please limit scope of `debian_setup` playbook to a desired host via `ansible-playbook --limit <hostname> playbooks/debian_setup.yml -u service -k -K` command.
-
-### Timeout waiting for privilege escalation prompt error
-
-Besides flag `-k` for user password use also `-K` flag to ask for root password in `ansible-playbook` command.
-
-### Vault password flags
-
-When using encrypted variables, remember to pass a vault password option to `ansible-playbook`: `--vault-password-file <path>` or `--ask-vault-pass`.
+**Kubernetes-oriented infrastructure** (manifests, Helm values, and related GitOps sources) lives under [`./k3s/`](k3s/) and is maintained in a **GitOps** model: desired state is declared in Git and reconciled into the cluster (see [ADR-004](documentation/adr/004-k3s-cd-tooling.md) for the CD controller choice).

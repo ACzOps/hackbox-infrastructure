@@ -1,6 +1,8 @@
-### Important note
+# Important note
+
 For this Valkey installation there was a secret created manually, named `valkey-users` with keys `admin-password`, `readonly-password`, and `infisical-password`.
 Example below:
+
 ```yaml
 ---
 apiVersion: v1

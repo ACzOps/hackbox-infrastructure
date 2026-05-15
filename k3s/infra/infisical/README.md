@@ -1,6 +1,8 @@
-### Important note
+# Important note
+
 For this Infisical installation there was a secret created manually, named `infisical-secrets` with multiple important keys.
 Example is shown below:
+
 ```yaml
 ---
 apiVersion: v1

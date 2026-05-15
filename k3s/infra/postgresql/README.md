@@ -1,6 +1,9 @@
-## Important note
-# Infisical user
+# Important note
+
+## Infisical user
+
 For the cluster here there was a secret created manually, named `postgresql-cluster-infisical`. Example below:
+
 ```yaml
 ---
 apiVersion: v1
@@ -14,8 +17,10 @@ data:
   password: <base64_password>
 ```
 
-# PGadmin4 secret
+## PGadmin4 secret
+
 Same with PGAdmin4 passwords and server definitons:
+
 ```yaml
 ---
 apiVersion: v1

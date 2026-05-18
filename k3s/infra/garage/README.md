@@ -8,5 +8,5 @@ kubectl -n garage exec -it garage-0 -- /garage status
 kubectl -n garage exec -it garage-0 -- /garage layout assign <id> -z k3s -c <disk_size> -t <tag>
 
 # Apply layout
-kubectl -n garage exec -it garage-0 -- /garage layout apply
+kubectl -n garage exec -it garage-0 -- /garage layout apply --version 1
 ```

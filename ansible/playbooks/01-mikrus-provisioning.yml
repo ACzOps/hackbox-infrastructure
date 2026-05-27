@@ -1,0 +1,15 @@
+---
+- name: Deploy WireGuard
+  hosts: wireguard
+  become: true
+  roles:
+    - wireguard
+    - wireguard_portal
+  tags: wireguard
+
+- name: Deploy Fluent Bit
+  hosts: mikrus
+  become: true
+  roles:
+    - fluentbit
+  tags: fluentbit

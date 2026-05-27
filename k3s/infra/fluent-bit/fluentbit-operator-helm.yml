@@ -1,0 +1,42 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: fluent-operator
+  namespace: kube-system
+spec:
+  version: 4.0.0
+  chart: fluent-operator
+  repo: https://fluent.github.io/helm-charts
+  targetNamespace: fluent-bit
+  createNamespace: true
+  valuesContent: |-
+    spec:
+      serviceMonitor:
+        enable: true
+      fluentbit:
+        enable: true
+        serviceMonitor:
+          enable: true
+        image:
+          tag: "5.0.5"
+        input:
+          tail:
+            memBufLimit: 25MB
+          systemd:
+            includeKubelet: false
+            systemdFilter:
+              enable: true
+              filters: []
+        output:
+          loki:
+            enable: true
+            host: loki-gateway.loki.svc.cluster.local
+            port: 80
+            tenantID: "fluent-bit"
+            autoKubernetesLabels: true
+            labels:
+              - job=fluent-bit
+        filter:
+          kubernetes:
+            labels: true

@@ -1,0 +1,53 @@
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterFilter
+metadata:
+  name: kubernetes
+  labels:
+    fluentbit.fluent.io/enabled: "true"
+    fluentbit.fluent.io/component: logging
+spec:
+  match: kube.*
+  filters:
+  - kubernetes:
+      kubeURL: https://kubernetes.default.svc:443
+      kubeCAFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      kubeTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      labels: true
+      annotations: true
+      keepLog: false
+      k8sLoggingExclude: false
+      k8sLoggingParser: true
+      mergeLog: true
+      #  - nest:
+      #      operation: lift
+      #      nestedUnder: kubernetes
+      #      addPrefix: kubernetes_
+      #  - modify:
+      #      rules:
+      #      - remove: stream
+      #      - remove: kubernetes_pod_id
+      #      - remove: kubernetes_host
+      #      - remove: kubernetes_container_hash
+      #  - nest:
+      #      operation: nest
+      #      wildcard:
+      #      - kubernetes_*
+      #      nestUnder: kubernetes
+      #      removePrefix: kubernetes_
+# ---
+# apiVersion: fluentbit.fluent.io/v1alpha2
+# kind: ClusterFilter
+# metadata:
+#   name: systemd
+#   labels:
+#     fluentbit.fluent.io/enabled: "true"
+#     fluentbit.fluent.io/component: logging
+# spec:
+#   match: service.*
+#   filters:
+#   - lua:
+#       script:
+#         key: systemd.lua
+#         name: fluent-bit-lua
+#       call: add_time
+#       timeAsTable: true

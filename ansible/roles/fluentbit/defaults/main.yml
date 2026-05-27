@@ -1,0 +1,3 @@
+---
+fluentbit_version: 5.0.5
+fluentbit_gpg_url: https://packages.fluentbit.io/fluentbit.key

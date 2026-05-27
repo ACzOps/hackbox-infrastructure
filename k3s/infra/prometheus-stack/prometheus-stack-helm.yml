@@ -24,6 +24,7 @@ spec:
                   storage: 15Gi
     prometheus:
       prometheusSpec:
+        serviceMonitorSelectorNilUsesHelmValues: false
         scrapeConfigSelector:
           matchLabels:
             prometheus: scrape-config

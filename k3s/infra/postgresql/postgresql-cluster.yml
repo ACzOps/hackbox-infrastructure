@@ -30,6 +30,13 @@ spec:
       storageClassName: longhorn-pg
   managed:
     roles:
+    - name: authentik
+      ensure: present
+      login: true
+      superuser: false
+      createdb: false
+      passwordSecret:
+        name: postgresql-cluster-authentik    
     - name: infisical
       ensure: present
       login: true

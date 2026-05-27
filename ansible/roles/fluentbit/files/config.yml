@@ -1,0 +1,17 @@
+---
+service:
+  flush: 1
+  log_level: info
+  http_server: true
+  http_listen: 127.0.0.1
+  http_port: 2020
+  hot_reload: on
+
+pipeline:
+  inputs:
+    - name: systemd
+      tag: host.*
+      systemd_filter: _SYSTEMD_UNIT=caddy.service
+  outputs:
+    - name: stdout
+      match: '*'

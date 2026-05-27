@@ -1,0 +1,41 @@
+---
+- name: Check OS codename
+  ansible.builtin.command: grep -oP '(?<=VERSION_CODENAME=).*' /etc/os-release
+  register: fluentbit_codename
+  changed_when: false
+
+- name: Add Fluent Bit repository
+  ansible.builtin.deb822_repository:
+    name: grafana
+    types: deb
+    uris: "https://packages.fluentbit.io/debian/{{ fluentbit_codename.stdout }}"
+    suites: "{{ fluentbit_codename.stdout }}"
+    components: main
+    architectures: amd64
+    signed_by: "{{ fluentbit_gpg_url }}"
+
+- name: Install Fluent Bit
+  ansible.builtin.apt:
+    package: "fluent-bit={{ fluentbit_version }}"
+    state: present
+    update_cache: true
+
+- name: Add custom config YAML
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/config.yml"
+    dest: /etc/fluent-bit/config.yml
+    mode: "0644"
+
+- name: Modify Fluent Bit service with new config
+  ansible.builtin.lineinfile:
+    path: /usr/lib/systemd/system/fluent-bit.service
+    regexp: '^ExecStart.*'
+    line: "ExecStart=/opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/config.yml"
+    state: present
+
+- name: Enable and start Fluent Bit service
+  ansible.builtin.systemd_service:
+    name: fluent-bit.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

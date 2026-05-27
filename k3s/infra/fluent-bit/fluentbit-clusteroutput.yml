@@ -1,0 +1,30 @@
+---
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterOutput
+metadata:
+  name: loki
+  labels:
+    fluentbit.fluent.io/enabled: "true"
+spec:
+  logLevel: warning
+  match: 'kube.*'
+  loki:
+    host: loki-gateway.k3s.hackbox.cc
+    port: 443
+    tls:
+      verify: true
+    labels:
+      - $kubernetes['pod_name']
+      - $kubernetes['namespace_name']
+      - $kubernetes['container_name']
+      - job=fluent-bit
+    lineFormat: json
+    autoKubernetesLabels: "on"
+    # removeKeys:
+    #   - kubernetes
+    #   - stream
+    tenantID:
+      valueFrom:
+        secretKeyRef:
+          key: tenant
+          name: tenant-id

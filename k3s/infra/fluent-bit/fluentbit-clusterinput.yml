@@ -1,0 +1,36 @@
+# apiVersion: fluentbit.fluent.io/v1alpha2
+# kind: ClusterInput
+# metadata:
+#   name: systemd
+#   labels:
+#     fluentbit.fluent.io/enabled: "true"
+#     fluentbit.fluent.io/component: logging
+# spec:
+#   systemd:
+#     tag: service.*
+#     path: /var/log/journal
+#     db: /fluent-bit/tail/systemd.db
+#     dbSync: Normal
+#     storageType: memory
+#     stripUnderscores: "off"
+#     systemdFilter:
+#       - _SYSTEMD_UNIT=k3s-agent.service
+#       - _SYSTEMD_UNIT=ssh.service
+---
+apiVersion: fluentbit.fluent.io/v1alpha2
+kind: ClusterInput
+metadata:
+  name: tail
+  labels:
+    fluentbit.fluent.io/enabled: "true"
+    fluentbit.fluent.io/component: logging
+spec:
+  tail:
+    tag: kube.*
+    path: /var/log/containers/*.log
+    parser: docker
+    refreshIntervalSeconds: 10
+    memBufLimit: 25MB
+    skipLongLines: false
+    db: /tmp/fb_k3s.db
+    dbSync: Normal

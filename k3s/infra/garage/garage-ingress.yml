@@ -1,0 +1,26 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: garage
+  namespace: garage
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    #  - match: "Host(`web.garage.k3s.hackbox.cc`) && HostRegexp(`^.+\.web\.garage.k3s.hackbox.cc`)"
+  - match: "Host(`garage.k3s.hackbox.cc`)"
+    kind: Rule
+    services:
+    - name: garage
+      kind: Service
+      port: 3902
+      namespace: garage
+  - match: "Host(`s3.k3s.hackbox.cc`) || Host(`*.s3.k3s.hackbox.cc`)"
+    kind: Rule
+    services:
+    - name: garage
+      kind: Service
+      port: 3900
+      namespace: garage
+  tls: {}

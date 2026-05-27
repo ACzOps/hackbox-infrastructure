@@ -13,17 +13,10 @@ spec:
         job: mikrus
       targets:
         - mikrus.hackbox.cc:9100
----
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
-  name: wireguard
-  namespace: prometheus-stack
-  labels:
-    prometheus: scrape-config
-spec:
-  scheme: HTTP
-  staticConfigs:
+    - labels:
+        job: alloy
+      targets:
+        - mikrus.hackbox.cc:12345
     - labels:
         job: wireguard
       targets:

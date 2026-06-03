@@ -1,0 +1,13 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: authentik
+  namespace: postgresql
+spec:
+  databaseReclaimPolicy: retain
+  name: authentik
+  owner: authentik
+  ensure: present
+  cluster:
+    name: postgresql-cluster

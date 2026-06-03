@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: authentik
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: authentik
+  namespace: kube-system
+spec:
+  version: 2026.5.0
+  chart: authentik
+  repo: https://charts.goauthentik.io/
+  targetNamespace: authentik
+  createNamespace: false
+  valuesContent: |-
+    global:
+      image:
+        tag: 2026.5.0@sha256:9be48ad4a944874c98cf75c650f26dd2afc53f67ee7be27c50c57eb37a63d66b
+    authentik:
+      error_reporting:
+        enabled: false
+      postgresql:
+        host: postgresql-cluster-rw.postgresql.svc.cluster.local
+        user: file:///postgres-creds/username
+        password: file:///postgres-creds/password
+    server:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: authentik-postgresql-creds
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
+      env:
+        - name: AUTHENTIK_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: authentik-secret
+              key: password
+    worker:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: authentik-postgresql-creds
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
+      env:
+        - name: AUTHENTIK_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: authentik-secret
+              key: password

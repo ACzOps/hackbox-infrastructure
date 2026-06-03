@@ -18,7 +18,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 2Gi
+          storage: 20Gi
       storageClassName: longhorn-pg
   walStorage:
     pvcTemplate:
@@ -26,7 +26,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: 10Gi
       storageClassName: longhorn-pg
   managed:
     roles:

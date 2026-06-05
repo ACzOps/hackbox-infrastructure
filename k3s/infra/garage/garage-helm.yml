@@ -26,7 +26,7 @@ spec:
         size: 5Gi
       data:
         storageClass: longhorn-xfs
-        size: 50Gi
+        size: 30Gi
     image:
       tag: "v2.3.0@sha256:dac0c92add4f1a0b41035e94b41036a270ffbe88a37c7ac9c3f19e6dc5bdccf2"
     monitoring:

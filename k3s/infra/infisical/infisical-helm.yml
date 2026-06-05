@@ -16,7 +16,7 @@ spec:
       image.tag: "v0.159.28@sha256:3ab10367dc7708028d003bd20b488ccb7f537d346487a6748ff75d48bc282454"
       replicaCount: 2
       autoBootstrap:
-        enabled: true
+        enabled: false
         secretDestination:
           namespace: "infisical"
         organization: "hackbox-cc"

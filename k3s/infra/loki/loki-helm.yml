@@ -47,6 +47,7 @@ spec:
     write:
       persistence:
         storageClass: longhorn-xfs
+        size: 15Gi
       extraEnv:
         - name: LOKI_S3_ENDPOINT
           valueFrom:
@@ -83,6 +84,7 @@ spec:
     backend:
       persistence:
         storageClass: longhorn-xfs
+        size: 5Gi
       extraArgs:
         - '-config.expand-env=true'
       extraEnv:

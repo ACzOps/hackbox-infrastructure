@@ -23,7 +23,7 @@ spec:
       enabled: true
       meta:
         storageClass: longhorn-xfs
-        size: 30Gi
+        size: 5Gi
       data:
         storageClass: longhorn-xfs
         size: 50Gi

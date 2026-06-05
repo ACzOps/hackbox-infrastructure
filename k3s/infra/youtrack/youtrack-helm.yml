@@ -21,19 +21,19 @@ spec:
         backupType: volumeStorage
         name: youtrack-backup
         volumeStorage:
-          storageClassName: longhorn
-          storageSize: 10Gi
+          storageClassName: longhorn-xfs
+          storageSize: 5Gi
       data:
         name: youtrack-data
-        storageClassName: longhorn
-        storageSize: 10Gi
+        storageClassName: longhorn-xfs
+        storageSize: 5Gi
       logs:
         name: youtrack-logs
-        storageClassName: longhorn
+        storageClassName: longhorn-xfs
         storageSize: 5Gi
       conf:
         name: youtrack-config
-        storageClassName: longhorn
+        storageClassName: longhorn-xfs
         storageSize: 1Gi
     networkPolicyWhitelist:
       traefik:

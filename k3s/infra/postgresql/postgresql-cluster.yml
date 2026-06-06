@@ -37,6 +37,13 @@ spec:
       createdb: false
       passwordSecret:
         name: postgresql-cluster-authentik
+    - name: gitlab
+      ensure: present
+      login: true
+      superuser: false
+      createdb: false
+      passwordSecret:
+        name: postgresql-cluster-gitlab
     - name: infisical
       ensure: present
       login: true

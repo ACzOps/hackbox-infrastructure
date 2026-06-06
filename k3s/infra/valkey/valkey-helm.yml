@@ -28,6 +28,9 @@ spec:
         infisical:
           permissions: "~* &* -@all +@connection +@read +@write +@keyspace +@pubsub +@transaction +@scripting +info"
           passwordKey: "infisical-password"
+        gitlab:
+          permissions: "~* &* -@all +@connection +@read +@write +@keyspace +@pubsub +@transaction +@scripting +info"
+          passwordKey: "gitlab-password"
     metrics:
       enabled: true
       serviceMonitor:

@@ -1,4 +1,9 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gitlab
+---
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
@@ -31,8 +36,8 @@ spec:
         port: 6379
         auth:
           enabled: true
-          secret: gitlab-redis
-          key: redis-password
+          secret: gitlab-valkey
+          key: password
         scheme: rediss
     redis:
       tls:

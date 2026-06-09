@@ -43,3 +43,8 @@ spec:
       tls:
         enabled: true
         authClients: false
+    installCertmanager: false
+    certmanager:
+      installCRDs: false
+      config:
+        enableGatewayAPI: false

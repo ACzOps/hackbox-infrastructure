@@ -15,4 +15,5 @@ data:
   admin-password: <base64_pass>
   readonly-password: <base64_pass>
   infisical-password: <base64_pass>
+  gitlab-password: <base64_pass>
 ```

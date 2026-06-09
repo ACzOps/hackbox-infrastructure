@@ -1,0 +1,13 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: gitlab-db
+  namespace: postgresql
+spec:
+  databaseReclaimPolicy: retain
+  name: gitlab
+  owner: gitlab
+  ensure: present
+  cluster:
+    name: postgresql-cluster

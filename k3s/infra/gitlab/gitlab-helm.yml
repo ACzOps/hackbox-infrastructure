@@ -45,10 +45,10 @@ spec:
         configureCertmanager: false
       appConfig:
         object_store:
-          enabled: true
-          connection:
-            secret: gitlab-s3
-            key: s3
+          enabled: false
+          # connection:
+          #   secret: gitlab-s3
+          #   key: s3
         backups:
           bucket: gitlab-backups
           tmpBucket: gitlab-tmp

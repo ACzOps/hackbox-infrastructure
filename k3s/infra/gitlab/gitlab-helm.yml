@@ -39,6 +39,24 @@ spec:
           secret: gitlab-valkey
           key: password
         scheme: rediss
+      gatewayApi:
+        enabled: false
+        installEnvoy: false
+        configureCertmanager: false
+      appConfig:
+        object_store:
+          enabled: true
+          connection:
+            secret: gitlab-s3
+            key: s3
+        backups:
+          bucket: gitlab-backups
+          tmpBucket: gitlab-tmp
+      registry:
+        bucket: gitlab-registry
+        storage:
+          secret: gitlab-s3
+          key: s3        
     redis:
       tls:
         enabled: true
@@ -48,3 +66,10 @@ spec:
       installCRDs: false
       config:
         enableGatewayAPI: false
+    gitlab:
+      toolbox:
+        backups:
+          objectStorage:
+            config:
+              secret: gitlab-s3
+              key: s3

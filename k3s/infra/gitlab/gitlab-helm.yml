@@ -52,11 +52,44 @@ spec:
         backups:
           bucket: gitlab-backups
           tmpBucket: gitlab-tmp
+        lfs:
+          enabled: true        
+          bucket: gitlab-lfs
+          connection:
+            secret: gitlab-s3
+            key: s3
+        artifacts:
+          enabled: true        
+          bucket: gitlab-artifacts
+          connection:
+            secret: gitlab-s3
+            key: s3
+        uploads:
+          enabled: true        
+          bucket: gitlab-uploads
+          connection:
+            secret: gitlab-s3
+            key: s3
+        packages:
+          enabled: true
+          bucket: gitlab-packages
+          connection:
+            secret: gitlab-s3
+            key: s3
+        terraformState:
+          enabled: true
+          bucket: gitlab-terraform-state
+          connection:
+            secret: gitlab-s3
+            key: s3
+        ciSecureFiles:
+          enabled: true
+          bucket: gitlab-ci-secure-files
+          connection:
+            secret: gitlab-s3
+            key: s3
       registry:
         bucket: gitlab-registry
-        storage:
-          secret: gitlab-s3
-          key: s3        
     redis:
       tls:
         enabled: true
@@ -73,3 +106,7 @@ spec:
             config:
               secret: gitlab-s3
               key: s3
+    registry:
+      storage:
+        secret: gitlab-s3
+        key: s3                      
